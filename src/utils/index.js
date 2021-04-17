@@ -1,4 +1,4 @@
-import { DIRECTIONS } from "../constants";
+import { DIRECTIONS, PLAYER_COLORS } from "../constants";
 
 export const getCellIndex = (row, col) => ((row * 16) + col);
 
@@ -22,3 +22,5 @@ export const getCellNeighbours = (row, col) => {
 
     return neighbours;
 };
+
+export const getPlayerColor = (playerId) => PLAYER_COLORS[playerId];

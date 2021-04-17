@@ -11,6 +11,7 @@ function closeness(max, value) {
 
 function OrbGroup({
     sphereCount = 1,
+    color,
     ...restProps
 }) {
     const groupRef = useRef();
@@ -25,7 +26,17 @@ function OrbGroup({
         }
     }, [sphereCount])
 
-    const orbs = useMemo(() => initSpherePositions(sphereCount).map((spherePos) => <Orb position={spherePos} />), [sphereCount])
+    const orbs = useMemo(
+        () => initSpherePositions(sphereCount).map(
+            (spherePos) => (
+            <Orb 
+                position={spherePos}
+                color={color}
+            />
+            )
+        ), 
+        [sphereCount, color]
+    );
 
     useFrame(({ clock }) => {
         const { position, rotation } = groupRef.current;

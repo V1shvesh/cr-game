@@ -2,6 +2,7 @@ import React, { useRef } from 'react';
 
 function Orb({
     position,
+    color,
 }) {
     const ref = useRef();
 
@@ -11,7 +12,7 @@ function Orb({
             position={position}
         >
             <sphereBufferGeometry args={[4, 50, 50]} />
-            <meshStandardMaterial color='blue' />
+            <meshStandardMaterial color={color} />
         </mesh>
     );
 }

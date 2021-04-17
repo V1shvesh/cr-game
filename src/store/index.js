@@ -1,8 +1,8 @@
 import { configureStore } from '@reduxjs/toolkit'
-import cellReducer from './slices/cell';
+import gameReducer from './slices/game';
 
 export default configureStore({
   reducer: {
-      cell: cellReducer,
+      game: gameReducer,
   }
 })

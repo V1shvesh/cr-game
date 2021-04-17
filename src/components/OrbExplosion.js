@@ -1,9 +1,10 @@
-import React, { useRef, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useFrame } from 'react-three-fiber';
 import Orb from './Orb';
 import * as THREE from 'three';
 
 function OrbExplosion({
+    color,
     directions,
     onEnd,
     ...restProps
@@ -14,7 +15,12 @@ function OrbExplosion({
 
     const orbs = spherePositions.map((spherePos) => { 
         const scaledSpherePos = spherePos.clone().multiplyScalar(scaleFactor);
-        return <Orb position={scaledSpherePos}/>;
+        return (
+            <Orb
+                color={color}
+                position={scaledSpherePos}
+            />
+        );
     })
 
     useFrame(() => {
