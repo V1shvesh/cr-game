@@ -3,7 +3,7 @@ import { Canvas } from 'react-three-fiber';
 import { PerspectiveCamera } from 'three';
 import { Provider, ReactReduxContext } from 'react-redux';
 
-import BoxGrid from './components/BoxGrid';
+import BoxGrid from './gameBoard/components/BoxGrid';
 
 function App() {
   const {store} = useContext(ReactReduxContext);

@@ -12,7 +12,7 @@ import {
     updateCellsToBeIncremented,
     activePlayerSelector,
     endGameSelector
-} from '../store/slices/game';
+} from '../../store/slices/game';
 import { getCellNeighbours, getPlayerColor } from '../utils';
 import { GAME_STATES } from '../constants';
 
