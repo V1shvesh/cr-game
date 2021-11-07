@@ -10,7 +10,8 @@ import {
     cellSelector,
     gameStateSelector,
     updateCellsToBeIncremented,
-    activePlayerSelector
+    activePlayerSelector,
+    endGameSelector
 } from '../store/slices/game';
 import { getCellNeighbours, getPlayerColor } from '../utils';
 import { GAME_STATES } from '../constants';
@@ -26,6 +27,7 @@ export default function Box({size, row, col, ...props}) {
     const dispatch = useDispatch();
 
     const activePlayer = useSelector(state => activePlayerSelector(state));
+    const isGameEnded = useSelector(state => endGameSelector(state));
 
     const { sphereCount, playerId } = useSelector(state => cellSelector(state, row, col));
     const gameState = useSelector(state => gameStateSelector(state));
@@ -42,9 +44,10 @@ export default function Box({size, row, col, ...props}) {
     const handleClick = useCallback(() => {
         if(gameState === GAME_STATES.CAPTURE) return;
         if(playerId && playerId !== activePlayer) return;
+        if(isGameEnded) return;
         dispatch(updateCellsToBeIncremented({count: 1}))
         dispatch(incrementSphereCount({row, col, playerId: activePlayer}))
-    }, [dispatch, row, col, playerId, gameState, activePlayer])
+    }, [dispatch, row, col, playerId, gameState, activePlayer, isGameEnded])
 
     const handleOnExplosionEnd = useCallback(() => {
         setIsExploding(false);

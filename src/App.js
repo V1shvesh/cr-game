@@ -1,12 +1,12 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Canvas } from 'react-three-fiber';
 import { PerspectiveCamera } from 'three';
-import { Provider } from 'react-redux';
+import { Provider, ReactReduxContext } from 'react-redux';
 
-import store from './store';
 import BoxGrid from './components/BoxGrid';
 
 function App() {
+  const {store} = useContext(ReactReduxContext);
   return (
     <Canvas
       onCreated={({gl, setDefaultCamera}) => {

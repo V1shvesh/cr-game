@@ -1,7 +1,5 @@
 import React from 'react';
 import Box from './Box';
-import { useSelector } from 'react-redux';
-import { endGameSelector } from '../store/slices/game';
 
 export default function BoxGrid({
     rows = 2,
@@ -9,7 +7,6 @@ export default function BoxGrid({
     boxSize = 1,
     ...restProps
 }) {
-    const isGameEnded = useSelector(state => endGameSelector(state));
 
     const xOffset = (columns/2) * boxSize - boxSize/2;
     const yOffset = (rows/2) * boxSize - boxSize/2;
@@ -18,14 +15,14 @@ export default function BoxGrid({
         const row = Math.floor(idx / columns);
         const col = idx % columns;
 
-        return !isGameEnded ? (
+        return (
             <Box
                 size={boxSize}
                 position={[col * boxSize, - row * boxSize, 0]}
                 row={row}
                 col={col}
             />
-        ) : null;
+        );
     })
 
     return (
