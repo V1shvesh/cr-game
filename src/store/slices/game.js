@@ -1,6 +1,6 @@
 import { createSlice, createSelector } from '@reduxjs/toolkit';
-import { getCellIndex, getCellNeighbours } from '../../utils';
-import { GAME_STATES } from '../../constants';
+import { getCellIndex, getCellNeighbours } from '../../gameBoard/utils';
+import { GAME_STATES } from '../../gameBoard/constants';
 
 const DEFAULT_CELL_STATE = {
     sphereCount: 0,
