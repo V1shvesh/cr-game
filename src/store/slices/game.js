@@ -4,17 +4,23 @@ import { GAME_STATES } from '../../constants';
 
 const DEFAULT_CELL_STATE = {
     sphereCount: 0,
-    playerId: 0,
+    playerId: null,
 }
 
+const DEFAULT_PLAYER_COUNT = 2;
+
+const INITIAL_GAME_STATE = {
+    cells: [],
+    playerOccupiedCellCount: Array(DEFAULT_PLAYER_COUNT).fill(0),
+    cellsToBeIncremented: 0,
+    activePlayer: 0,
+    playerCount: DEFAULT_PLAYER_COUNT,
+    moveCount: 0,
+    endGame: false,
+};
 export const cellSlice = createSlice({
     name: 'game',
-    initialState: {
-        cells: [],
-        cellsToBeIncremented: 0,
-        activePlayer: 1,
-        playerCount: 3,
-    },
+    initialState: INITIAL_GAME_STATE,
     reducers: {
     incrementSphereCount: (state, action) => {
         const {
@@ -24,23 +30,41 @@ export const cellSlice = createSlice({
         const cellIndex = getCellIndex(row, col);
         const neighbourCount = getCellNeighbours(row, col).length;
 
-        if(!state.cells[cellIndex]) {
+        if(state.cells[cellIndex]) {
+            /**
+             * Transfer ownership of cell from
+             * old player to new player.
+             */
+            if(state.cells[cellIndex].playerId !== playerId && state.cells[cellIndex].playerId !== null) {
+                state.playerOccupiedCellCount[
+                    state.cells[cellIndex].playerId
+                ] -= 1;
+                state.playerOccupiedCellCount[playerId] += 1;
+            }
+        } else {
             state.cells[cellIndex] = Object.assign({}, DEFAULT_CELL_STATE);
+            state.playerOccupiedCellCount[playerId] += 1;
         }
 
         state.cells[cellIndex].sphereCount += 1;
-        state.cellsToBeIncremented -= 1;
+        state.cells[cellIndex].playerId = playerId;
 
         if(state.cells[cellIndex].sphereCount >= neighbourCount) {
             state.cellsToBeIncremented += neighbourCount
         }
 
+        state.cellsToBeIncremented -= 1;
         if(state.cellsToBeIncremented <= 0) {
-            state.activePlayer = (state.activePlayer % state.playerCount) + 1
+            state.moveCount += 1;
+            if(
+                state.moveCount >= state.playerCount &&
+                state.playerOccupiedCellCount.some(count => count <= 0)
+            ) {
+                // END_GAME
+                state.endGame = true;
+            }
+            state.activePlayer = ((state.activePlayer + 1) % state.playerCount)
         }
-
-        state.cells[cellIndex].playerId = playerId;
-        
     },
     explodeCell: (state, action) => {
         const {
@@ -48,10 +72,16 @@ export const cellSlice = createSlice({
         } = action.payload;
 
         const cellIndex = getCellIndex(row, col);
-        state.cells[cellIndex] = DEFAULT_CELL_STATE;
+        
+        state.playerOccupiedCellCount[state.cells[cellIndex].playerId] -= 1
+
+        state.cells[cellIndex] = null;
     },
     updateCellsToBeIncremented: (state, { payload: {count} }) => {
         state.cellsToBeIncremented += count;
+    },
+    endGame: () => {
+        return INITIAL_GAME_STATE;
     }
   }
 });
@@ -60,7 +90,7 @@ export const cellSlice = createSlice({
 export default cellSlice.reducer
 
 // Actions
-export const { incrementSphereCount, explodeCell, updateCellsToBeIncremented } = cellSlice.actions
+export const { incrementSphereCount, explodeCell, updateCellsToBeIncremented, endGame } = cellSlice.actions
 
 // Selectors
 export const cellSelector = (state, row, col) => (
@@ -69,6 +99,9 @@ export const cellSelector = (state, row, col) => (
 
 export function filledCellsCountSelector(state) {
     return state.game.cellsToBeIncremented;
+}
+export function endGameSelector(state) {
+    return state.game.endGame;
 }
 
 export const gameStateSelector = createSelector(

@@ -4,7 +4,14 @@ import { useSelector, useDispatch } from 'react-redux'
 
 import OrbGroup from './OrbGroup';
 import OrbExplosion from './OrbExplosion';
-import { explodeCell, incrementSphereCount, cellSelector, gameStateSelector, updateCellsToBeIncremented, activePlayerSelector } from '../store/slices/game';
+import { 
+    explodeCell,
+    incrementSphereCount,
+    cellSelector,
+    gameStateSelector,
+    updateCellsToBeIncremented,
+    activePlayerSelector
+} from '../store/slices/game';
 import { getCellNeighbours, getPlayerColor } from '../utils';
 import { GAME_STATES } from '../constants';
 

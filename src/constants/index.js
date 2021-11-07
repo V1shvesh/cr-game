@@ -6,7 +6,6 @@ export const DIRECTIONS = {
 };
 
 export const PLAYER_COLORS = [
-    "#6C6F7D", //No Player
     "#ff595e",
     "#ffca3a",
     "#8ac926",
