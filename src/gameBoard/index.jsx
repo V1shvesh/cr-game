@@ -1,15 +1,14 @@
 import React, { useContext } from 'react';
+import { Provider, ReactReduxContext } from 'react-redux';
 import { Canvas } from 'react-three-fiber';
 import { PerspectiveCamera } from 'three';
-import { Provider, ReactReduxContext } from 'react-redux';
+import BoxGrid from './components/BoxGrid';
 
-import BoxGrid from './gameBoard/components/BoxGrid';
-
-function App() {
-  const {store} = useContext(ReactReduxContext);
+const GameBoard = () => {
+  const { store } = useContext(ReactReduxContext);
   return (
     <Canvas
-      onCreated={({gl, setDefaultCamera}) => {
+      onCreated={({ gl, setDefaultCamera }) => {
         gl.setClearColor('#333333');
         const camera = new PerspectiveCamera(40, window.innerWidth / window.innerHeight, 1, 1000);
         camera.position.z = 400;
@@ -30,6 +29,6 @@ function App() {
       </Provider>
     </Canvas>
   );
-}
+};
 
-export default App;
+export default GameBoard;
