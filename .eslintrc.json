@@ -18,6 +18,7 @@
     "rules": {
         "prettier/prettier": "error",
         "react/jsx-props-no-spreading": "off",
-        "no-param-reassign": ["error", {"ignorePropertyModificationsFor": ["state"]}]
+        "no-param-reassign": ["error", {"ignorePropertyModificationsFor": ["state"]}],
+        "react/prop-types": "off"
     }
 }
